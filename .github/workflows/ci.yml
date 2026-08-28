@@ -52,6 +52,12 @@ jobs:
       - name: Run WordPress Coding Standards
         run: composer phpcs
 
+      - name: Run News unit tests
+        run: composer test
+
+      - name: Validate News block JavaScript
+        run: node --check blocks/news/index.js
+
       - name: Scan the public boundary
         shell: pwsh
         run: ./tools/scan-public-boundary.ps1
@@ -65,8 +71,11 @@ jobs:
       - name: Prepare exact release package for WordPress
         shell: pwsh
         run: |
+          $header = Get-Content -Raw -LiteralPath chris-command.php
+          if ($header -notmatch '(?m)^ \* Version:\s+([0-9]+\.[0-9]+\.[0-9]+)\s*$') { throw 'Unable to read plugin version.' }
+          $archive = "dist/chris-command-$($Matches[1]).zip"
           New-Item -ItemType Directory -Path tests/smoke/package | Out-Null
-          Expand-Archive -LiteralPath dist/chris-command-0.1.0.zip -DestinationPath tests/smoke/package
+          Expand-Archive -LiteralPath $archive -DestinationPath tests/smoke/package
 
       - name: Activate package and run WordPress Plugin Check
         run: |

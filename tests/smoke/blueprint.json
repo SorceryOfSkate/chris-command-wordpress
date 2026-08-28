@@ -16,7 +16,7 @@
       "step": "installPlugin",
       "pluginData": {
         "resource": "bundled",
-        "path": "chris-command-0.1.0.zip"
+        "path": "chris-command-0.2.0.zip"
       },
       "options": {
         "activate": true,
@@ -36,6 +36,22 @@
     {
       "step": "wp-cli",
       "command": "wp eval-file /tmp/chris-command-activation.php"
+    },
+    {
+      "step": "writeFile",
+      "path": "/tmp/chris-command-news-live.php",
+      "data": {
+        "resource": "bundled",
+        "path": "news-live.php"
+      }
+    },
+    {
+      "step": "wp-cli",
+      "command": "wp eval-file /tmp/chris-command-news-live.php"
+    },
+    {
+      "step": "wp-cli",
+      "command": "wp post create --post_type=page --post_title='News' --post_name=news --post_status=publish --post_content='<!-- wp:chris-command/news {\"category\":\"tech\",\"limit\":5} /-->'"
     }
   ]
 }

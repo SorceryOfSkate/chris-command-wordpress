@@ -1,10 +1,20 @@
 [CmdletBinding()]
 param(
-    [string]$Version = '0.1.0'
+    [string]$Version = ''
 )
 
 $ErrorActionPreference = 'Stop'
 $repositoryRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
+$sourceHeader = Get-Content -Raw -LiteralPath (Join-Path $repositoryRoot 'chris-command.php')
+if ($sourceHeader -notmatch '(?m)^ \* Version:\s+([0-9]+\.[0-9]+\.[0-9]+)\s*$') {
+    throw 'Unable to read the source plugin version header.'
+}
+if (-not $Version) {
+    $Version = $Matches[1]
+} elseif ($Matches[1] -ne $Version) {
+    throw "Requested version $Version does not match source plugin header $($Matches[1])."
+}
+
 $archivePath = Join-Path $repositoryRoot "dist/chris-command-$Version.zip"
 $checksumPath = "$archivePath.sha256"
 
@@ -36,6 +46,13 @@ try {
         'includes/contracts/interface-module.php',
         'includes/core/class-module-registry.php',
         'includes/core/class-plugin.php',
+        'includes/modules/news/class-news-module.php',
+        'includes/modules/news/class-news-service.php',
+        'includes/modules/news/class-news-renderer.php',
+        'includes/modules/news/class-news-rest-controller.php',
+        'blocks/news/block.json',
+        'blocks/news/index.js',
+        'blocks/news/style.css',
         'LICENSE',
         'readme.txt',
         'uninstall.php'
@@ -55,11 +72,23 @@ try {
 
     $pluginHeader = Get-Content -Raw -LiteralPath (Join-Path $pluginRoot 'chris-command.php')
     $readme = Get-Content -Raw -LiteralPath (Join-Path $pluginRoot 'readme.txt')
+    $blockMetadata = Get-Content -Raw -LiteralPath (Join-Path $pluginRoot 'blocks/news/block.json') | ConvertFrom-Json
+    $packageMetadata = Get-Content -Raw -LiteralPath (Join-Path $repositoryRoot 'package.json') | ConvertFrom-Json
+    $changelog = Get-Content -Raw -LiteralPath (Join-Path $repositoryRoot 'CHANGELOG.md')
     if ($pluginHeader -notmatch "(?m)^ \* Version:\s+$([regex]::Escape($Version))\s*$") {
         throw 'Plugin header version does not match the release version.'
     }
     if ($readme -notmatch "(?m)^Stable tag:\s+$([regex]::Escape($Version))\s*$") {
         throw 'readme.txt stable tag does not match the release version.'
+    }
+    if ($blockMetadata.version -ne $Version) {
+        throw 'News block metadata version does not match the release version.'
+    }
+    if ($packageMetadata.version -ne $Version) {
+        throw 'package.json version does not match the release version.'
+    }
+    if ($changelog -notmatch "(?m)^## $([regex]::Escape($Version))(?:\s|$)") {
+        throw 'CHANGELOG.md does not contain the release version.'
     }
 
     $expectedHash = ((Get-Content -Raw -LiteralPath $checksumPath).Trim() -split '\s+')[0]

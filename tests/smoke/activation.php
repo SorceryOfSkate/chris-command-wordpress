@@ -17,7 +17,7 @@ if ( ! is_plugin_active( 'chris-command/chris-command.php' ) ) {
 	throw new RuntimeException( 'Chris Command is not active.' );
 }
 
-if ( ! defined( 'CHRIS_COMMAND_VERSION' ) || '0.1.0' !== CHRIS_COMMAND_VERSION ) {
+if ( ! defined( 'CHRIS_COMMAND_VERSION' ) || '0.2.0' !== CHRIS_COMMAND_VERSION ) {
 	throw new RuntimeException( 'Chris Command version constant is unavailable or incorrect.' );
 }
 
@@ -32,27 +32,21 @@ $option_count   = (int) $wpdb->get_var(
 );
 
 if ( 0 !== $option_count ) {
-	throw new RuntimeException( 'Phase 0 unexpectedly created WordPress options.' );
+	throw new RuntimeException( 'Activation unexpectedly created Chris Command options.' );
 }
 
 $routes = rest_get_server()->get_routes();
-
-foreach ( array_keys( $routes ) as $route ) {
-	if ( str_starts_with( $route, '/chris-command/' ) ) {
-		throw new RuntimeException( 'Phase 0 unexpectedly registered a REST route.' );
-	}
+if ( ! isset( $routes['/chris-command/v1/news'] ) ) {
+	throw new RuntimeException( 'The public News REST route is not registered.' );
 }
 
-if ( shortcode_exists( 'chris_command_news' ) ) {
-	throw new RuntimeException( 'Phase 0 unexpectedly registered the News shortcode.' );
+if ( ! shortcode_exists( 'chris_command_news' ) ) {
+	throw new RuntimeException( 'The News shortcode is not registered.' );
 }
 
 $block_types = WP_Block_Type_Registry::get_instance()->get_all_registered();
-
-foreach ( array_keys( $block_types ) as $block_name ) {
-	if ( str_starts_with( $block_name, 'chris-command/' ) ) {
-		throw new RuntimeException( 'Phase 0 unexpectedly registered a block.' );
-	}
+if ( ! isset( $block_types['chris-command/news'] ) ) {
+	throw new RuntimeException( 'The Chris Command News block is not registered.' );
 }
 
-WP_CLI::success( 'Chris Command 0.1.0 activated without persistent data or public modules.' );
+WP_CLI::success( 'Chris Command 0.2.0 activated with the News block, shortcode, and REST route.' );
