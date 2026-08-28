@@ -3,8 +3,11 @@
   "core": "WordPress/WordPress#7.1",
   "phpVersion": "8.3",
   "plugins": [
-    "../../dist/chris-command-0.1.0.zip"
+    "./dist/chris-command-0.1.0.zip"
   ],
-  "port": 8892,
-  "testsPort": 8893
+  "mappings": {
+    "wp-content/chris-command-smoke.php": "./tests/smoke/activation.php"
+  },
+  "testsEnvironment": false,
+  "port": 8892
 }

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "preferredVersions": {
+    "php": "8.3",
+    "wp": "7.1"
+  },
+  "steps": [
+    {
+      "step": "defineWpConfigConsts",
+      "consts": {
+        "WP_DEBUG": false,
+        "WP_DEBUG_DISPLAY": false
+      }
+    },
+    {
+      "step": "installPlugin",
+      "pluginData": {
+        "resource": "bundled",
+        "path": "chris-command-0.1.0.zip"
+      },
+      "options": {
+        "activate": true,
+        "targetFolderName": "chris-command",
+        "humanReadableName": "Chris Command",
+        "onError": "throw"
+      }
+    },
+    {
+      "step": "writeFile",
+      "path": "/tmp/chris-command-activation.php",
+      "data": {
+        "resource": "bundled",
+        "path": "activation.php"
+      }
+    },
+    {
+      "step": "wp-cli",
+      "command": "wp eval-file /tmp/chris-command-activation.php"
+    }
+  ]
+}

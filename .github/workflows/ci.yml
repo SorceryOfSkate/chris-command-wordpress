@@ -62,26 +62,12 @@ jobs:
           ./tools/build-release.ps1
           ./tools/verify-release.ps1
 
-      - name: Start WordPress 7.1 release environment
-        run: npm exec wp-env start -- --config=tests/smoke/.wp-env.release.json
-
-      - name: Verify activation and inert behavior
+      - name: Activate package and run WordPress Plugin Check
         run: |
+          npm exec wp-env start -- --config=tests/smoke/.wp-env.release.json
           npm exec wp-env run cli -- --config=tests/smoke/.wp-env.release.json wp plugin activate chris-command
-          npm exec wp-env run cli -- --config=tests/smoke/.wp-env.release.json wp eval '
-          if ( ! is_plugin_active( "chris-command/chris-command.php" ) ) { throw new RuntimeException( "Plugin is not active." ); }
-          if ( ! defined( "CHRIS_COMMAND_VERSION" ) || "0.1.0" !== CHRIS_COMMAND_VERSION ) { throw new RuntimeException( "Version constant is incorrect." ); }
-          global $wpdb;
-          $count = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->options} WHERE option_name LIKE %s", $wpdb->esc_like( "chris_command_" ) . "%" ) );
-          if ( 0 !== $count ) { throw new RuntimeException( "Phase 0 created options." ); }
-          foreach ( array_keys( rest_get_server()->get_routes() ) as $route ) { if ( str_starts_with( $route, "/chris-command/" ) ) { throw new RuntimeException( "Phase 0 registered a REST route." ); } }
-          if ( shortcode_exists( "chris_command_news" ) ) { throw new RuntimeException( "Phase 0 registered News." ); }
-          WP_CLI::success( "Activation smoke test passed." );
-          '
-
-      - name: Run WordPress Plugin Check
-        run: |
-          npm exec wp-env run cli -- --config=tests/smoke/.wp-env.release.json wp plugin install plugin-check --activate
+          npm exec wp-env run cli -- --config=tests/smoke/.wp-env.release.json wp eval-file wp-content/chris-command-smoke.php
+          npm exec wp-env run cli -- --config=tests/smoke/.wp-env.release.json wp plugin install https://downloads.wordpress.org/plugin/plugin-check.2.1.0.zip --activate
           npm exec wp-env run cli -- --config=tests/smoke/.wp-env.release.json wp plugin check chris-command
 
       - name: Stop WordPress environment

@@ -7,9 +7,22 @@ $excludedRoots = @('.git', '.tools', 'node_modules', 'vendor', 'dist', 'build', 
 $selfPath = (Resolve-Path -LiteralPath $PSCommandPath).Path
 $failures = [System.Collections.Generic.List[string]]::new()
 
-$files = Get-ChildItem -LiteralPath $repositoryRoot -Recurse -Force -File | Where-Object {
-    $relative = [IO.Path]::GetRelativePath($repositoryRoot, $_.FullName).Replace('\', '/')
-    -not ($excludedRoots | Where-Object { $relative -eq $_ -or $relative.StartsWith("$_/") })
+$candidatePaths = git -C $repositoryRoot ls-files --cached --others --exclude-standard
+if ($LASTEXITCODE -ne 0) {
+    throw 'Unable to enumerate public repository files with Git.'
+}
+
+$files = foreach ($candidatePath in $candidatePaths) {
+    $relative = $candidatePath.Replace('\', '/')
+    $isExcluded = $excludedRoots | Where-Object { $relative -eq $_ -or $relative.StartsWith("$_/") }
+    if ($isExcluded) {
+        continue
+    }
+
+    $fullPath = Join-Path $repositoryRoot $candidatePath
+    if (Test-Path -LiteralPath $fullPath -PathType Leaf) {
+        Get-Item -LiteralPath $fullPath
+    }
 }
 
 $forbiddenPath = '(?i)(^|/)(work|finances?|mtg|notes?|calendar|customer-data)(/|$)|(^|/)\.env(?:\.|$)|\.(sql|sqlite3?|csv|log|zip|bak)$'

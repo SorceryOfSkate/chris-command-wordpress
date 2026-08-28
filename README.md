@@ -16,6 +16,6 @@ Install the versioned `chris-command-X.Y.Z.zip` attached to a GitHub Release thr
 
 ## Development
 
-Install Composer and Node dependencies, then run PHPCS and the public-boundary scan. WordPress 7.1/PHP 8.3 development and activation checks use the checked-in `wp-env` configurations.
+Install Composer and Node dependencies, then run PHPCS and the public-boundary scan. Local WordPress 7.1/PHP 8.3 activation uses the checked-in WordPress Playground blueprint; CI runs the official Plugin Check tool in the native `wp-env` container.
 
 See `docs/architecture.md` and `docs/release-process.md` for the repository contract.

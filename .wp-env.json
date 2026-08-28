@@ -5,6 +5,6 @@
   "plugins": [
     "."
   ],
-  "port": 8888,
-  "testsPort": 8889
+  "testsEnvironment": false,
+  "port": 8891
 }
