@@ -1,0 +1,45 @@
+.chris-command-news {
+	border: 1px solid #c7c7c7;
+	border-radius: 0.35rem;
+	padding: 1.25rem;
+}
+
+.chris-command-news__header h2 {
+	margin: 0.15rem 0 0;
+}
+
+.chris-command-news__eyebrow,
+.chris-command-news__status,
+.chris-command-news__item p {
+	color: #595959;
+	font-size: 0.875rem;
+	margin: 0;
+}
+
+.chris-command-news__eyebrow {
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.chris-command-news__list {
+	margin: 1rem 0 0;
+	padding-left: 1.5rem;
+}
+
+.chris-command-news__item + .chris-command-news__item {
+	border-top: 1px solid #e1e1e1;
+	margin-top: 0.8rem;
+	padding-top: 0.8rem;
+}
+
+.chris-command-news__item a {
+	font-weight: 650;
+}
+
+.chris-command-news__notice,
+.chris-command-news__empty {
+	background: #f6f6f6;
+	margin: 1rem 0 0;
+	padding: 0.75rem;
+}
