@@ -43,4 +43,21 @@ if ( ! str_contains( $block, 'class="chris-command-news"' ) ) {
 	throw new RuntimeException( 'The dynamic News block did not render.' );
 }
 
-WP_CLI::success( 'Live News REST, shortcode, and block rendering passed.' );
+$dashboard_shortcode = do_shortcode( '[chris_command_dashboard]' );
+if ( ! str_contains( $dashboard_shortcode, 'data-cc-dashboard' ) || ! str_contains( $dashboard_shortcode, 'data-news-endpoint' ) ) {
+	throw new RuntimeException( 'The dashboard shortcode did not render the complete public shell.' );
+}
+
+$dashboard_block = do_blocks( '<!-- wp:chris-command/dashboard /-->' );
+if ( ! str_contains( $dashboard_block, 'class="cc-dashboard"' ) ) {
+	throw new RuntimeException( 'The primary dashboard block did not render.' );
+}
+
+$forbidden_public_payloads = array( 'data-cc-module="work"', '>Finances<', '>MTG<', '>Notes<', 'client_id', 'api_key', 'YAWA Build', 'Cassie', 'chatgpt.com' );
+foreach ( $forbidden_public_payloads as $forbidden_payload ) {
+	if ( str_contains( $dashboard_block, $forbidden_payload ) ) {
+		throw new RuntimeException( 'The dashboard contains a forbidden private payload.' );
+	}
+}
+
+WP_CLI::success( 'Live News REST plus dashboard shortcode and block rendering passed.' );

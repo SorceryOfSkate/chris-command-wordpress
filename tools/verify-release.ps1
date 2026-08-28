@@ -50,9 +50,16 @@ try {
         'includes/modules/news/class-news-service.php',
         'includes/modules/news/class-news-renderer.php',
         'includes/modules/news/class-news-rest-controller.php',
+        'includes/modules/dashboard/class-dashboard-module.php',
+        'includes/modules/dashboard/class-dashboard-renderer.php',
         'blocks/news/block.json',
         'blocks/news/index.js',
         'blocks/news/style.css',
+        'blocks/dashboard/block.json',
+        'blocks/dashboard/index.js',
+        'assets/css/dashboard.css',
+        'assets/js/dashboard.js',
+        'templates/chris-command-dashboard.php',
         'LICENSE',
         'readme.txt',
         'uninstall.php'
@@ -73,6 +80,7 @@ try {
     $pluginHeader = Get-Content -Raw -LiteralPath (Join-Path $pluginRoot 'chris-command.php')
     $readme = Get-Content -Raw -LiteralPath (Join-Path $pluginRoot 'readme.txt')
     $blockMetadata = Get-Content -Raw -LiteralPath (Join-Path $pluginRoot 'blocks/news/block.json') | ConvertFrom-Json
+    $dashboardMetadata = Get-Content -Raw -LiteralPath (Join-Path $pluginRoot 'blocks/dashboard/block.json') | ConvertFrom-Json
     $packageMetadata = Get-Content -Raw -LiteralPath (Join-Path $repositoryRoot 'package.json') | ConvertFrom-Json
     $changelog = Get-Content -Raw -LiteralPath (Join-Path $repositoryRoot 'CHANGELOG.md')
     if ($pluginHeader -notmatch "(?m)^ \* Version:\s+$([regex]::Escape($Version))\s*$") {
@@ -83,6 +91,9 @@ try {
     }
     if ($blockMetadata.version -ne $Version) {
         throw 'News block metadata version does not match the release version.'
+    }
+    if ($dashboardMetadata.version -ne $Version) {
+        throw 'Dashboard block metadata version does not match the release version.'
     }
     if ($packageMetadata.version -ne $Version) {
         throw 'package.json version does not match the release version.'

@@ -56,7 +56,10 @@ jobs:
         run: composer test
 
       - name: Validate News block JavaScript
-        run: node --check blocks/news/index.js
+        run: |
+          node --check blocks/news/index.js
+          node --check blocks/dashboard/index.js
+          node --check assets/js/dashboard.js
 
       - name: Scan the public boundary
         shell: pwsh

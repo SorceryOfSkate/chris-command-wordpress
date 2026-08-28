@@ -8,6 +8,7 @@
 namespace ChrisCommand;
 
 use ChrisCommand\Core\Module_Registry;
+use ChrisCommand\Modules\Dashboard\Dashboard_Module;
 use ChrisCommand\Modules\News\News_Module;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -26,6 +27,7 @@ final class Plugin {
 	public static function boot(): void {
 		$registry = new Module_Registry();
 		$registry->add( new News_Module() );
+		$registry->add( new Dashboard_Module() );
 		$registry->register_all();
 	}
 }
