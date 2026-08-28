@@ -16,7 +16,7 @@
       "step": "installPlugin",
       "pluginData": {
         "resource": "bundled",
-        "path": "chris-command-0.3.0.zip"
+        "path": "chris-command-0.3.1.zip"
       },
       "options": {
         "activate": true,
@@ -48,6 +48,18 @@
     {
       "step": "wp-cli",
       "command": "wp eval-file /tmp/chris-command-news-live.php"
+    },
+    {
+      "step": "writeFile",
+      "path": "/tmp/chris-command-dashboard-smoke.php",
+      "data": {
+        "resource": "bundled",
+        "path": "dashboard-template.php"
+      }
+    },
+    {
+      "step": "wp-cli",
+      "command": "wp eval-file /tmp/chris-command-dashboard-smoke.php"
     },
     {
       "step": "wp-cli",

@@ -4,7 +4,7 @@ Tags: command-center, dashboard, news, rss
 Requires at least: 7.1
 Tested up to: 7.1
 Requires PHP: 8.2
-Stable tag: 0.3.0
+Stable tag: 0.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ Public WordPress frontend for approved Chris Command modules.
 
 == Description ==
 
-Chris Command 0.3.0 adds the complete public command-center dashboard shell. One dashboard block, shortcode, or standalone page template renders the responsive interface, and the existing seven-category News service appears inside its News module.
+Chris Command 0.3.1 provides the complete public command-center dashboard shell and fixes asset loading across its block, shortcode, and standalone page template entry points.
 
 == Installation ==
 
@@ -38,6 +38,10 @@ Spotify Privacy Policy: https://www.spotify.com/legal/privacy-policy/
 Spotify Terms and Conditions: https://www.spotify.com/legal/end-user-agreement/
 
 == Changelog ==
+
+= 0.3.1 =
+* Fix a missing dashboard shortcode identifier that could cause a fatal error while assets were enqueued.
+* Add packaged template, block, and shortcode regression coverage.
 
 = 0.3.0 =
 * Add the complete public Chris Command dashboard shell as a dynamic block, shortcode, and standalone page template.

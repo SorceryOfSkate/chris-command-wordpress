@@ -17,7 +17,7 @@ if ( ! is_plugin_active( 'chris-command/chris-command.php' ) ) {
 	throw new RuntimeException( 'Chris Command is not active.' );
 }
 
-if ( ! defined( 'CHRIS_COMMAND_VERSION' ) || '0.3.0' !== CHRIS_COMMAND_VERSION ) {
+if ( ! defined( 'CHRIS_COMMAND_VERSION' ) || '0.3.1' !== CHRIS_COMMAND_VERSION ) {
 	throw new RuntimeException( 'Chris Command version constant is unavailable or incorrect.' );
 }
 
@@ -62,4 +62,4 @@ if ( ! isset( $page_templates['chris-command-dashboard.php'] ) ) {
 	throw new RuntimeException( 'The standalone Chris Command Dashboard page template is not registered.' );
 }
 
-WP_CLI::success( 'Chris Command 0.3.0 activated with the public dashboard shell and News service.' );
+WP_CLI::success( 'Chris Command 0.3.1 activated with the public dashboard shell and News service.' );

@@ -6,7 +6,8 @@
     "./tests/smoke/package/chris-command"
   ],
   "mappings": {
-    "wp-content/chris-command-smoke.php": "./tests/smoke/activation.php"
+    "wp-content/chris-command-smoke.php": "./tests/smoke/activation.php",
+    "wp-content/chris-command-dashboard-smoke.php": "./tests/smoke/dashboard-template.php"
   },
   "testsEnvironment": false,
   "port": 8892

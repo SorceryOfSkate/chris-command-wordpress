@@ -85,6 +85,7 @@ jobs:
           npm exec wp-env start -- --config=tests/smoke/.wp-env.release.json
           npm exec wp-env run cli -- --config=tests/smoke/.wp-env.release.json wp plugin activate chris-command
           npm exec wp-env run cli -- --config=tests/smoke/.wp-env.release.json wp eval-file wp-content/chris-command-smoke.php
+          npm exec wp-env run cli -- --config=tests/smoke/.wp-env.release.json wp eval-file wp-content/chris-command-dashboard-smoke.php
           npm exec wp-env run cli -- --config=tests/smoke/.wp-env.release.json wp plugin install https://downloads.wordpress.org/plugin/plugin-check.2.1.0.zip --activate
           npm exec wp-env run cli -- --config=tests/smoke/.wp-env.release.json wp plugin check chris-command
 

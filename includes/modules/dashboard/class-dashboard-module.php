@@ -17,7 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Registers the dashboard block, shortcode, assets, and optional page template.
  */
 final class Dashboard_Module implements Module {
-	private const TEMPLATE = 'chris-command-dashboard.php';
+	private const BLOCK_NAME = 'chris-command/dashboard';
+	private const SHORTCODE  = 'chris_command_dashboard';
+	private const TEMPLATE   = 'chris-command-dashboard.php';
 
 	/**
 	 * Dashboard renderer.
@@ -52,7 +54,7 @@ final class Dashboard_Module implements Module {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_template_assets' ) );
 		add_filter( 'theme_page_templates', array( $this, 'register_page_template' ) );
 		add_filter( 'template_include', array( $this, 'select_page_template' ) );
-		add_shortcode( 'chris_command_dashboard', array( $this->renderer, 'render_shortcode' ) );
+		add_shortcode( self::SHORTCODE, array( $this->renderer, 'render_shortcode' ) );
 	}
 
 	/**
@@ -130,7 +132,7 @@ final class Dashboard_Module implements Module {
 		}
 
 		$uses_dashboard = self::TEMPLATE === get_page_template_slug()
-			|| has_block( 'chris-command/dashboard', $post )
+			|| has_block( self::BLOCK_NAME, $post )
 			|| has_shortcode( $post->post_content, self::SHORTCODE );
 
 		if ( ! $uses_dashboard ) {
