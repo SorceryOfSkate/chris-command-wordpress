@@ -1,0 +1,37 @@
+# Local environment and secrets.
+.env
+.env.*
+!.env.example
+.wp-env.override.json
+
+# Dependencies and generated output.
+/node_modules/
+/vendor/
+/build/
+/dist/
+/coverage/
+/.tools/
+
+# WordPress local state.
+/wordpress/
+/wp-content/uploads/
+*.sql
+*.sqlite
+*.sqlite3
+
+# Tool caches and logs.
+.phpunit.cache/
+.phpcs-cache
+.cache/
+*.log
+
+# Release packages.
+*.zip
+*.zip.sha256
+
+# Editor and operating-system files.
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini

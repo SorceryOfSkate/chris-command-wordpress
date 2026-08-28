@@ -1,0 +1,16 @@
+{
+  "name": "chris-command-wordpress",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Development tooling for the Chris Command WordPress plugin.",
+  "scripts": {
+    "boundary": "pwsh -NoProfile -File tools/scan-public-boundary.ps1",
+    "build:release": "pwsh -NoProfile -File tools/build-release.ps1",
+    "verify:release": "pwsh -NoProfile -File tools/verify-release.ps1",
+    "wp-env:start": "wp-env start",
+    "wp-env:stop": "wp-env stop"
+  },
+  "devDependencies": {
+    "@wordpress/env": "11.14.0"
+  }
+}

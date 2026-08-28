@@ -1,0 +1,39 @@
+name: Prerelease
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out tagged source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Build and verify release
+        shell: pwsh
+        run: |
+          $version = '${{ github.ref_name }}'.TrimStart('v')
+          ./tools/build-release.ps1 -Version $version
+          ./tools/verify-release.ps1 -Version $version
+
+      - name: Publish GitHub prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          gh release create "$GITHUB_REF_NAME" \
+            "dist/chris-command-$VERSION.zip" \
+            "dist/chris-command-$VERSION.zip.sha256" \
+            --prerelease \
+            --generate-notes \
+            --title "Chris Command $VERSION"

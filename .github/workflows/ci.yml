@@ -1,0 +1,89 @@
+name: Quality gates
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Set up PHP 8.3
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
+        with:
+          php-version: '8.3'
+          coverage: none
+          tools: composer:v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install development dependencies
+        run: |
+          composer install --no-interaction --no-progress --prefer-dist
+          npm ci
+
+      - name: Validate PHP syntax
+        shell: pwsh
+        run: |
+          $files = Get-ChildItem -Recurse -File -Filter *.php | Where-Object { $_.FullName -notmatch '[\\/]vendor[\\/]' }
+          foreach ($file in $files) {
+            php -l $file.FullName
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+
+      - name: Run WordPress Coding Standards
+        run: composer phpcs
+
+      - name: Scan the public boundary
+        shell: pwsh
+        run: ./tools/scan-public-boundary.ps1
+
+      - name: Build and verify the production ZIP
+        shell: pwsh
+        run: |
+          ./tools/build-release.ps1
+          ./tools/verify-release.ps1
+
+      - name: Start WordPress 7.1 release environment
+        run: npm exec wp-env start -- --config=tests/smoke/.wp-env.release.json
+
+      - name: Verify activation and inert behavior
+        run: |
+          npm exec wp-env run cli -- --config=tests/smoke/.wp-env.release.json wp plugin activate chris-command
+          npm exec wp-env run cli -- --config=tests/smoke/.wp-env.release.json wp eval '
+          if ( ! is_plugin_active( "chris-command/chris-command.php" ) ) { throw new RuntimeException( "Plugin is not active." ); }
+          if ( ! defined( "CHRIS_COMMAND_VERSION" ) || "0.1.0" !== CHRIS_COMMAND_VERSION ) { throw new RuntimeException( "Version constant is incorrect." ); }
+          global $wpdb;
+          $count = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->options} WHERE option_name LIKE %s", $wpdb->esc_like( "chris_command_" ) . "%" ) );
+          if ( 0 !== $count ) { throw new RuntimeException( "Phase 0 created options." ); }
+          foreach ( array_keys( rest_get_server()->get_routes() ) as $route ) { if ( str_starts_with( $route, "/chris-command/" ) ) { throw new RuntimeException( "Phase 0 registered a REST route." ); } }
+          if ( shortcode_exists( "chris_command_news" ) ) { throw new RuntimeException( "Phase 0 registered News." ); }
+          WP_CLI::success( "Activation smoke test passed." );
+          '
+
+      - name: Run WordPress Plugin Check
+        run: |
+          npm exec wp-env run cli -- --config=tests/smoke/.wp-env.release.json wp plugin install plugin-check --activate
+          npm exec wp-env run cli -- --config=tests/smoke/.wp-env.release.json wp plugin check chris-command
+
+      - name: Stop WordPress environment
+        if: always()
+        run: npm exec wp-env stop -- --config=tests/smoke/.wp-env.release.json

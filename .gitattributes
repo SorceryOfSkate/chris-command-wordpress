@@ -1,0 +1,25 @@
+* text=auto eol=lf
+*.php text eol=lf
+*.ps1 text eol=lf
+
+.git export-ignore
+.github export-ignore
+docs export-ignore
+node_modules export-ignore
+tests export-ignore
+tools export-ignore
+vendor export-ignore
+.distignore export-ignore
+.editorconfig export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+.wp-env.json export-ignore
+CHANGELOG.md export-ignore
+CONTRIBUTING.md export-ignore
+README.md export-ignore
+SECURITY.md export-ignore
+composer.json export-ignore
+composer.lock export-ignore
+package.json export-ignore
+package-lock.json export-ignore
+phpcs.xml.dist export-ignore
