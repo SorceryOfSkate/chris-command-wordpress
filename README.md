@@ -2,7 +2,7 @@
 
 Public WordPress foundation for approved Chris Command command-center modules.
 
-Version 0.2.0 adds the first deliberately small public module: server-rendered News. It exposes seven allowlisted RSS categories through a dynamic block, shortcode, and read-only REST endpoint without including any private dashboard module or data.
+Version 0.3.0 makes the redesigned public Chris Command dashboard the primary WordPress frontend. The complete command-center shell is available through one block, shortcode, or standalone page template, and the existing seven-lane News service is integrated directly into its News module.
 
 ## Requirements
 
@@ -20,8 +20,9 @@ Install Composer and Node dependencies, then run PHPCS and the public-boundary s
 
 See `docs/architecture.md` and `docs/release-process.md` for the repository contract.
 
-## News usage
+## Dashboard usage
 
-- Block: insert **Chris Command News**, then choose a category and story count in the block settings.
-- Shortcode: use `[chris_command_news]` or `[chris_command_news category="philippines" limit="5"]`.
-- REST: request `/wp-json/chris-command/v1/news` for all categories or append `?category=tech` for one allowlisted lane.
+- Block: insert **Chris Command Dashboard** and use full alignment when the theme supports it.
+- Shortcode: use `[chris_command_dashboard]`.
+- Standalone page: select the **Chris Command Dashboard** page template to bypass theme chrome and let the plugin own the complete visual frame.
+- News remains available through `/wp-json/chris-command/v1/news`; the dashboard calls that endpoint itself and does not require seven separate blocks.

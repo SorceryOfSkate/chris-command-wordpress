@@ -16,7 +16,7 @@
       "step": "installPlugin",
       "pluginData": {
         "resource": "bundled",
-        "path": "chris-command-0.2.0.zip"
+        "path": "chris-command-0.3.0.zip"
       },
       "options": {
         "activate": true,
@@ -51,7 +51,7 @@
     },
     {
       "step": "wp-cli",
-      "command": "wp post create --post_type=page --post_title='News' --post_name=news --post_status=publish --post_content='<!-- wp:chris-command/news {\"category\":\"tech\",\"limit\":5} /-->'"
+      "command": "wp post create --post_type=page --post_title='Chris Command' --post_name=command --post_status=publish --post_content='<!-- wp:chris-command/dashboard /-->' --page_template=chris-command-dashboard.php"
     }
   ]
 }

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 - 2026-08-28
+
+- Make the redesigned public Chris Command dashboard the primary WordPress frontend.
+- Add one dynamic dashboard block, shortcode fallback, and standalone page template.
+- Integrate the seven-lane News REST service into the dashboard's News surface.
+- Add scoped responsive command-center CSS, internal scrolling, folding rails, module navigation, focus timer, and an optional browser-local Spotify embed.
+- Exclude all private source modules, personal payloads, credentials, URLs, and the unapproved illustrated background.
+
 ## 0.2.0 - 2026-08-28
 
 - Add seven allowlisted Google News RSS categories through WordPress `fetch_feed()`.

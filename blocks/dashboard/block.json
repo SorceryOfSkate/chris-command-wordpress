@@ -1,0 +1,17 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "chris-command/dashboard",
+  "version": "0.3.0",
+  "title": "Chris Command Dashboard",
+  "category": "widgets",
+  "icon": "dashboard",
+  "description": "Render the complete public Chris Command interface.",
+  "textdomain": "chris-command",
+  "supports": {
+    "align": ["full"],
+    "html": false,
+    "multiple": false
+  },
+  "editorScript": "file:./index.js"
+}
