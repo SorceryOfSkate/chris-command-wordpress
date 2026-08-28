@@ -2,7 +2,7 @@
 
 Public WordPress foundation for approved Chris Command command-center modules.
 
-Version 0.3.0 makes the redesigned public Chris Command dashboard the primary WordPress frontend. The complete command-center shell is available through one block, shortcode, or standalone page template, and the existing seven-lane News service is integrated directly into its News module.
+Version 0.3.1 fixes dashboard asset loading for the standalone page template, dashboard block, and shortcode entry points. The complete command-center shell remains available through all three entry points, with the existing seven-lane News service integrated directly into its News module.
 
 ## Requirements
 

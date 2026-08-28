@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1 - 2026-08-28
+
+- Define and reuse canonical dashboard block, shortcode, and template identifiers.
+- Fix the fatal error in dashboard asset enqueueing when WordPress evaluates shortcode content.
+- Add a packaged WordPress regression smoke test covering the page template, block, and shortcode entry points.
+
 ## 0.3.0 - 2026-08-28
 
 - Make the redesigned public Chris Command dashboard the primary WordPress frontend.
