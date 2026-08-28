@@ -21,7 +21,7 @@ $files = foreach ($candidatePath in $candidatePaths) {
 
     $fullPath = Join-Path $repositoryRoot $candidatePath
     if (Test-Path -LiteralPath $fullPath -PathType Leaf) {
-        Get-Item -LiteralPath $fullPath
+        Get-Item -LiteralPath $fullPath -Force
     }
 }
 

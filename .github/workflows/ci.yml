@@ -72,4 +72,5 @@ jobs:
 
       - name: Stop WordPress environment
         if: always()
+        continue-on-error: true
         run: npm exec wp-env stop -- --config=tests/smoke/.wp-env.release.json
