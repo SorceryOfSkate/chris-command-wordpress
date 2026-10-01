@@ -10,6 +10,6 @@
   },
   "devDependencies": {
     "@wp-playground/cli": "3.1.51",
-    "@wordpress/env": "11.14.0"
+    "@wordpress/env": "11.16.0"
   }
 }
